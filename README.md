@@ -1,4 +1,6 @@
-# source repo
+## Course Django 2021 ##
+
+**Source repo**
 https://github.com/divanov11/Django-2021
 
 **Activate env**
