@@ -13,20 +13,25 @@ def createProfile(sender, instance, created, **kwargs):
            username = user.username,
            email = user.email,
            name = user.first_name
-       )    
+       ) 
+        
     
-@receiver(post_save, sender=Profile)
-def profileUpdated(sender, instance, created, **kwargs):
-    print('Profile saved')
-    print('Instance:', instance)
-    print('Created', created)
+def updateUser(sender, instance, created, **kwargs):
+    profile = instance
+    user = profile.user # 1 to 1 relation
+    if created == False: # to avoid infinite loop, check that profile not just created
+        user.first_name = profile.name
+        user.username = profile.username
+        user.email = profile.email
+        user.save()
+                
     
-def deleteUser(sender, instance, created, **kwargs):
+def deleteUser(sender, instance, **kwargs):
     print('Profile deleted. Deleting user...')
     user = instance.user
     user.delete()
         
 
 post_save.connect(createProfile, sender=User)
-# post_save.connect(profileUpdated, sender=Profile) replaced with decorator
+post_save.connect(updateUser, sender=Profile)
 post_delete.connect(deleteUser, sender=Profile)
