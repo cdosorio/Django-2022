@@ -3,8 +3,17 @@
 **Source repo**
 https://github.com/divanov11/Django-2021
 
+**Install virtualenv**
+pip install virtualenv
+
+**Create venv**
+python -m virtualenv venv01
+
 **Activate env**
-env\scripts\activate
+venv01\Scripts\activate
+
+**Install packages**
+pip install -r requirements.txt
 
 **Run**
 python manage.py runserver
