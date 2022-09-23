@@ -33,3 +33,12 @@ python manage.py shell
 
 **static files for prod (debug false)**
 python manage.py collectstatic
+
+**Steps to add form**
+Create template
+Create View
+Create URL
+Add new url in navbar or as a link
+Create Form (define fields to show + style)
+Add Form to View
+To add more style to form, copy from form-template.html
