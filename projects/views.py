@@ -1,19 +1,23 @@
+from ast import Try
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from projects.utils import searchProjects
+from projects.utils import paginateProjects, searchProjects
 from .models import Project
 from .forms import ProjectForm
 
 # Create your views here.
 def projects(request):
     projects, search_query = searchProjects(request)
-    
-    context = {'projects': projects, 'search_query': search_query}
+    custom_range, projects_page = paginateProjects(request, projects, 5)
+            
+    context = {'projects_page': projects_page, 'search_query': search_query, 'custom_range':custom_range}
     return render(request, 'projects/projects.html', context)
+
 
 def project(request, pk):
     project = Project.objects.get(id=pk)    
     return render(request, 'projects/single-project.html', {'project': project})
+
 
 @login_required(login_url="login")
 def createProject(request):
@@ -30,6 +34,7 @@ def createProject(request):
     context = {'form': form}   
     return render(request, 'projects/project_form.html', context)
 
+
 @login_required(login_url="login")
 def updateProject(request, pk):
     # Only the owner can update it
@@ -44,6 +49,7 @@ def updateProject(request, pk):
             return redirect('account')
     context = {'form': form}   
     return render(request, 'projects/project_form.html', context)
+
 
 @login_required(login_url="login")
 def deleteProject(request, pk):
