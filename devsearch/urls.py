@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 # anything starting with projects, goes to projects.urls
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('projects', include('projects.urls')),
+    path('projects/', include('projects.urls')),
     path('', include('users.urls'))
 ]
 
