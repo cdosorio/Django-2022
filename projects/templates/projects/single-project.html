@@ -40,22 +40,35 @@
                         Vote{{project.vote_total|pluralize:"s"}})
                     </h5>
 
-                    <form class="form" action="#" method="POST">
-                        <!-- Textarea -->
+                    {% if request.user.profile.id in project.reviewers %}
+                    <p>You have already submitted your review</p>
+
+                    {% elif request.user.profile == project.owner %}
+                    <p>You cannot review your own work</p>
+
+                    {% elif request.user.is_authenticated %}
+                    <form class="form" action="{% url 'project' project.id %}" method="POST">
+                        {% csrf_token %}
+                        {% for field in form %}
                         <div class="form__field">
-                            <label for="formInput#textarea">Comments: </label>
-                            <textarea class="input input--textarea" name="message" id="formInput#textarea"
-                                placeholder="Write your comments here..."></textarea>
+                            <label for="formInput#textarea">{{field.label}}</label>
+                            {{field}}
                         </div>
-                        <input class="btn btn--sub btn--lg" type="submit" value="Comments" />
+                        {% endfor %}
+                        <input class="btn btn--sub btn--lg" type="submit" value="Add Review" />
                     </form>
+
+                    {% else %}
+                    <a href="{% url 'login' %}?next={{request.path}}">Please login to leave a review</a>
+                    {% endif %}
+
                     <div class="commentList">
 
                         {% for review in project.review_set.all %}
                         {% if review.body %}
 
                         <div class="comment">
-                            <a href="{% url 'user-profile' review.owner.id %}">
+                            <a href="{% url 'user-profile' review.owner.id  %}">
                                 <img class="avatar avatar--md" src="{{review.owner.profile_image.url}}" alt="user" />
                             </a>
                             <div class="comment__details">

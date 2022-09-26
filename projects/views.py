@@ -1,9 +1,10 @@
 from ast import Try
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from projects.utils import paginateProjects, searchProjects
 from .models import Project
-from .forms import ProjectForm
+from .forms import ProjectForm, ReviewForm
 
 # Create your views here.
 def projects(request):
@@ -15,8 +16,20 @@ def projects(request):
 
 
 def project(request, pk):
-    project = Project.objects.get(id=pk)    
-    return render(request, 'projects/single-project.html', {'project': project})
+    project = Project.objects.get(id=pk)
+    form = ReviewForm()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        review = form.save(commit=False)
+        review.project = project
+        review.owner = request.user.profile
+        review.save()        
+        # due to property decorator, a parenthesis is not required
+        project.getVoteCount 
+        messages.success(request, 'Your review was successfully submitted')
+        return redirect('project', pk=project.id)
+        
+    return render(request, 'projects/single-project.html', {'project': project, 'form':form})
 
 
 @login_required(login_url="login")
