@@ -4,8 +4,8 @@
 <h1>Project Form</h1>
 
 
- <!-- Main Section -->
- <main class="formPage my-xl">
+<!-- Main Section -->
+<main class="formPage my-xl">
     <div class="content-box">
         <div class="formWrapper">
             <a class="backButton" href="{%  url 'projects' %}"><i class="im im-angle-left"></i></a>
@@ -23,8 +23,17 @@
                 {% endfor %}
 
                 <div class="form__field">
-                    <label for="formInput#text">Tags</label>
-                    <textarea class="input" name="newtags" placeholder="Add tags here, separated with a space..."> </textarea>
+                    <label for="formInput#text">Remove Tags</label>
+                    {% for tag in project.tags.all %}
+                    <div class="project-tag tag tag--pill tag--main" data-tag="{{tag.id}}"
+                        data-project="{{project.id}}">{{tag.name}} &#215;</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form__field">
+                    <label for="formInput#text">Add Tags</label>
+                    <textarea class="input" name="newtags"
+                        placeholder="Add tags here, separated with a space..."> </textarea>
                 </div>
 
 
@@ -33,5 +42,6 @@
         </div>
     </div>
 </main>
+
 
 {% endblock content %}
