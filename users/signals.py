@@ -17,7 +17,7 @@ def createProfile(sender, instance, created, **kwargs):
             email=user.email,
             name=user.first_name
         )
-        
+
         subject = 'Welcome to DevSearch'
         body = 'We are glad you are here'
 
@@ -42,8 +42,11 @@ def updateUser(sender, instance, created, **kwargs):
 
 def deleteUser(sender, instance, **kwargs):
     print('Profile deleted. Deleting user...')
-    user = instance.user
-    user.delete()
+    try:
+        user = instance.user
+        user.delete()
+    except:
+        pass
 
 
 post_save.connect(createProfile, sender=User)

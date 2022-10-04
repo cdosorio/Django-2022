@@ -21,10 +21,18 @@ class Profile(models.Model):
     social_website = models.CharField(max_length=200, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
-    
+
     def __str__(self):
         return str(self.user.username)
-    
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.profile_image.url
+        except:
+            url = ''
+        return url
+
 class Skill(models.Model):
     owner = models.ForeignKey(
             Profile, on_delete=models.CASCADE, null=True, blank=True)
@@ -35,8 +43,8 @@ class Skill(models.Model):
 
     def __str__(self):
         return str(self.name)
-    
-    
+
+
 class Message(models.Model):
     sender = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True)
     recipient = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True, related_name="messages")
@@ -47,10 +55,10 @@ class Message(models.Model):
     is_read = models.BooleanField(default=False, null=True)
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
-    
+
     def __str__(self):
         return str(self.subject)
-    
+
     class Meta:
         ordering = ['is_read', '-created']
 
