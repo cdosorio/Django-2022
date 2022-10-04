@@ -38,18 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
-    
+
     'rest_framework',
     "corsheaders",
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (        
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )    
+    )
 }
 
 
@@ -61,7 +61,7 @@ SIMPLE_JWT = {
     'UPDATE_LAST_LOGIN': False,
 
     'ALGORITHM': 'HS256',
-    
+
     'VERIFYING_KEY': None,
     'AUDIENCE': None,
     'ISSUER': None,
@@ -161,6 +161,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Enabled CORS (frontend was added)
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Email
